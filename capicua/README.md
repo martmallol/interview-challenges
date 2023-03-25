@@ -1,2 +1,0 @@
-- determinar si un número es capicúa, es decir, si el número se lee igual de izquierda a derecha que derecha a izquierda
-- ejemplos: 121, 1001, 123321
