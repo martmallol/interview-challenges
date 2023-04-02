@@ -1,0 +1,14 @@
+h2, h4 {
+    margin: 0.5rem;
+}
+
+
+.table {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+td {
+    padding: 5px;
+    height: 0;
+}

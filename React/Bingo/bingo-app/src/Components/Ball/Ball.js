@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import './Ball.css'
 
-function Ball() {
+function Ball({number, inUse}) {
     return(
-        <p>I'm a ball!</p>
+        <div className="ball false">
+            <span>{number}</span>
+        </div>
     );
 }
 
