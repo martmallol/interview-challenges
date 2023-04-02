@@ -3,7 +3,7 @@ import './Ball.css'
 
 function Ball({number, inUse}) {
     return(
-        <div className="ball false">
+        <div className={"ball " + inUse}>
             <span>{number}</span>
         </div>
     );
