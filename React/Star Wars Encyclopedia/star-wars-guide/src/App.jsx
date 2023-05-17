@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// pages
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import CharacterPage from './pages/CharacterPage';
+
+// components
+import Navbar from './components/Navbar';
+
 const SWAPI_PREFIX = `https://swapi.dev/api/people/`;
 
 function App() {
@@ -30,18 +41,20 @@ function App() {
   
 
   return (
-    <div>
-      
-      <ul>
-        
-        {SWCharacters ? (SWCharacters.map((data, index) => (
-          <li key={index}>Personaje {index + 1}: {data.name}</li>
-        ))) : (
-          <p>Cargando datos... </p>
-        )}
-      </ul>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route exact path="/" element={ <Home SWCharacters={SWCharacters} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/character/:id" element={<CharacterPage />} />
+      </Routes>
+    </Router>
   )
 }
 
 export default App;
+
+/* 
+    
+ */
