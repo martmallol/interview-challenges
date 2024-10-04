@@ -1,127 +1,87 @@
 import './App.css';
 import Board from './Components/Board/Board';
-import Ball from './Components/Ball/Ball';
 import { useState } from 'react';
+import { fromToArray } from './utils/balls';
+import LastBall from './Components/LastBall/LastBall';
 
-
-const fromToArray = (from,to) => {
-  let arr = [];
-  for(let i = 0; from + i <= to; i++) {
-    arr.push({
-      number: from+i,
-      used: false
-     });
-  }
-  return arr;
-}
-
-const divideInRows = (arr) => {
-  let newArr = [];
-  for(let i = 0; i*10 < arr.length; i++) {
-    let subArr = arr.slice(i*10, (i+1)*10);
-    newArr.push(subArr);
-  }
-  return newArr;
-}
-
-
-
-function App() { // 3:30MIN
+function App() {
+  const numberOfBalls = 90;
   const [lastBall, setLastBall] = useState('None yet!');
-  const [ballNumbers, setBallNumbers] = useState(fromToArray(1,90));
-  const [ballRows, setBallRows] = useState(divideInRows(ballNumbers));
-  // const [malleableBalls, setMalleableBalls] = useState(ballNumbers);
+  const [balls, setBalls] = useState(fromToArray(1, 90));
 
-  /*let ballRows = [];
-  
-
-  let malleableBalls = [];
-
-  ballNumbers = fromToArray(1,90);
-  ballRows = divideInRows(ballNumbers);
-  malleableBalls = ballNumbers;
-  */
+  const handleBalls = (balls) => {
+    setBalls(balls);
+  };
 
   const makeAllBallsInvalid = () => {
-    setBallNumbers(fromToArray(1,90));
-    
-    
-    // let invalidBalls = divideInRows(ballNumbers);
-    let arr = ballRows;
-    arr.map((subArr) => {
-      for(let i = 0; i < subArr.length; i++) {
-        subArr[i] = {number: subArr[i].number, used: false};
-      }
-    });
-    console.log("arr")
-    console.log(arr)
-    setBallRows(arr);
-
-  }
+    handleBalls(fromToArray(1, 90));
+  };
 
   const makeBallValid = (ball) => {
-    let arr = ballRows;
-    const validBall = {number: ball.number, used: true};
-    arr.map((subArr) => {
-      let idx = subArr.indexOf(ball);
-      if (idx !== -1) subArr[idx] = validBall;
-    });
-    setBallRows(arr);
-  }
+    const ballsCopy = [...balls];
+    const validBall = {
+      number: ball.number,
+      used: true,
+    };
+    ballsCopy[ball.number - 1] = validBall;
+
+    handleBalls(ballsCopy);
+  };
 
   const getRandomBall = () => {
-    const randomIndex = Math.floor(Math.random() * ballNumbers.length);
-    const ball = ballNumbers[randomIndex];
-    ballNumbers.splice(randomIndex, 1); // It mutates the array!
-    console.log('Malleable:' + ballNumbers.length)
-    makeBallValid(ball);
-    return ball;
-  }
+    if (balls.length > 0) {
+      const randomIndex = Math.floor(Math.random() * balls.length);
+      const ball = balls[randomIndex];
+      makeBallValid(ball);
+      return ball;
+    }
+  };
 
   const handleNextBall = () => {
-    if(ballNumbers.length > 0) {
+    if (balls.length > 0) {
       let nextBall = getRandomBall();
-      setLastBall(nextBall.number);
+      if (nextBall) setLastBall(nextBall.number);
     }
-  }
+  };
 
   const handleRestart = () => {
-    
-  }
-  
+    setLastBall('None yet!');
+    makeAllBallsInvalid();
+  };
+
   // Restart game
-  document.addEventListener('keyup', event => {
+  document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
       console.log('Space pressed');
-      
-      // Handling restart
-      makeAllBallsInvalid();
-      setLastBall('None yet!');
-    }
-  })
 
-  
+      // Handling restart
+      handleRestart();
+    }
+  });
+
   // Play game (right arrow key)
-  document.addEventListener('keyup', event => {
+  document.addEventListener('keydown', (event) => {
     if (event.code === 'ArrowRight') {
+      console.log('Right arrow pressed');
       handleNextBall();
     }
-  })
+  });
 
   return (
     <div className="App">
       <header className="App-header">
         <h2>My bingo app</h2>
-        <Board balls={ballRows}/>
-        {console.log('ballNumbers' + ballNumbers.length)}
-        {console.log(ballRows)}
+        <Board balls={balls} />
+        {console.log('balls: ', balls)}
         <footer>
-          <div className='leftFooter'>
-            <button onClick={handleNextBall}>Play</button>
+          <div className="leftFooter">
+            <button onClick={() => handleNextBall()}>Play</button>
           </div>
-          <div className='rightFooter'>
-            <Ball number={lastBall}/>
-          </div>
+          <LastBall
+            balls={balls}
+            number={lastBall.number}
+            inUse={lastBall.inUse}
+          />
         </footer>
       </header>
     </div>

@@ -1,0 +1,153 @@
+nav {
+	background-color: lightcoral;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	/* padding: 10px; */
+	display: flex;
+	justify-content: space-between;
+}
+
+/* Logo */
+.sw-logo {
+	height: 50px;
+	margin-left: 1rem;
+}
+
+/* Character Search Bar */
+.character-search-bar {
+	width: 700px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* background-color: yellowgreen; */
+}
+
+.character-search-bar input {
+	height: 17px;
+	width: 100%;
+
+	margin-left: 1rem;
+	padding: 0.5rem 1rem;
+	
+	font-size: 0.9rem;
+	border: 1px solid;
+	border-radius: 1rem 0rem 0rem 1rem;
+	
+	background-color: rgba(252, 237, 237, 0.966);
+}
+
+.character-search-bar button {
+	height: 35px;
+
+	margin: 0;
+	padding: 0.32rem 1rem;
+	
+	border: 1px solid;
+	border-left: none;
+	border-radius: 0rem 1rem 1rem 0rem;
+
+	background-color: rgba(255, 184, 184, 0.966);
+}
+
+/* Navbar Menu */
+.pages-links {
+	display: flex;
+	align-items: center;
+	/* background-color: beige; */
+	margin-right: 2rem;
+}
+
+.navbar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex; /* se muestran en linea sus hijos (los li)*/
+	/* background-color: blueviolet; */
+}
+
+.navbar li {
+	margin-left: 1.5rem;
+}
+
+.navbar li a {
+	color: black;
+	text-decoration: none;
+}
+
+.navbar li a:hover {
+	color: white;
+}
+
+/* Hamburguer */
+.hamburger {
+	margin: 0 2rem;
+}
+
+.navbar-toggle {
+  display: none;
+}
+
+.navbar-toggle-icon {
+  display: none;
+  cursor: pointer;
+}
+
+.navbar-toggle-icon .icon-bar {
+	display: block;
+  width: 22px;
+	height: 2px;
+	background-color: #fff;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 768px) {
+   .pages-links {
+    position: fixed;
+		display: none;
+  }
+
+	#navbar-menu {
+		left: 0;
+		top: 50px;
+		position: fixed;
+		width: 100%;
+		flex-direction: column;
+		text-align: center;
+		background-color: lightcoral
+	}
+
+	#navbar-menu li {
+		padding: 0.5rem 0rem;
+	}
+ 
+	.pages-links.active {
+		position: fixed;
+		display: flex;
+	}
+
+ .navbar-toggle:checked ~ .navbar ul {
+			display: flex;
+			flex-direction: column;
+		} 
+
+	.navbar-toggle {
+		display: block;
+		visibility: hidden;
+	}
+
+  .navbar-toggle-icon {
+    display: block;
+  }
+}
+
+/* @media (min-width: 768px) {
+  .pages-links {
+    display: flex;
+  }
+
+	.navbar-menu {
+		flex-direction: row;
+	}
+} */

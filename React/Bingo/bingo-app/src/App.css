@@ -43,26 +43,12 @@ button {
 }
 
 footer {
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 20px;
 }
 
 .leftFooter {
-  float: left;
-
-  width: 150px;
-  height: 100px;
-  margin: 0 auto;
-}
-
-.leftFooter button {
-  margin-top: 1.5rem;
-
-}
-
-.rightFooter {
-
-  float: right;
-  width: 100px;
-  height: 100px;
-
 }
