@@ -1,87 +1,66 @@
 import './App.css';
 import Board from './Components/Board/Board';
-import { useState } from 'react';
-import { fromToArray } from './utils/balls';
+import { useState, useEffect } from 'react';
 import LastBall from './Components/LastBall/LastBall';
+import { getRandomNumberFromOneTo } from './utils/balls';
 
 function App() {
   const numberOfBalls = 90;
-  const [lastBall, setLastBall] = useState('None yet!');
-  const [balls, setBalls] = useState(fromToArray(1, 90));
+  const [selectedBalls, setSelectedBalls] = useState([]);
 
-  const handleBalls = (balls) => {
-    setBalls(balls);
+  const addBall = (ball) => {
+    setSelectedBalls((prevBalls) => [...prevBalls, ball]);
   };
 
-  const makeAllBallsInvalid = () => {
-    handleBalls(fromToArray(1, 90));
-  };
-
-  const makeBallValid = (ball) => {
-    const ballsCopy = [...balls];
-    const validBall = {
-      number: ball.number,
-      used: true,
-    };
-    ballsCopy[ball.number - 1] = validBall;
-
-    handleBalls(ballsCopy);
+  const removeAllBalls = () => {
+    setSelectedBalls([]);
   };
 
   const getRandomBall = () => {
-    if (balls.length > 0) {
-      const randomIndex = Math.floor(Math.random() * balls.length);
-      const ball = balls[randomIndex];
-      makeBallValid(ball);
-      return ball;
+    let ballNumber = getRandomNumberFromOneTo(numberOfBalls);
+    while (selectedBalls.includes(ballNumber)) {
+      ballNumber = getRandomNumberFromOneTo(numberOfBalls);
     }
+    addBall(ballNumber);
   };
 
   const handleNextBall = () => {
-    if (balls.length > 0) {
-      let nextBall = getRandomBall();
-      if (nextBall) setLastBall(nextBall.number);
+    if (selectedBalls.length !== numberOfBalls) {
+      getRandomBall();
     }
   };
 
   const handleRestart = () => {
-    setLastBall('None yet!');
-    makeAllBallsInvalid();
+    removeAllBalls();
   };
 
-  // Restart game
-  document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') {
-      console.log('Space pressed');
+  // Handle key presses for space (restart) and right arrow (play next ball)
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === 'Space') {
+        handleRestart();
+      } else if (event.code === 'ArrowRight') {
+        handleNextBall();
+      }
+    };
 
-      // Handling restart
-      handleRestart();
-    }
-  });
+    window.addEventListener('keydown', handleKeyDown);
 
-  // Play game (right arrow key)
-  document.addEventListener('keydown', (event) => {
-    if (event.code === 'ArrowRight') {
-      console.log('Right arrow pressed');
-      handleNextBall();
-    }
-  });
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []); // Listen for changes in selectedBalls
 
   return (
     <div className="App">
       <header className="App-header">
         <h2>My bingo app</h2>
-        <Board balls={balls} />
-        {console.log('balls: ', balls)}
+        <Board selectedBalls={selectedBalls} numberOfBalls={numberOfBalls} />
         <footer>
           <div className="leftFooter">
-            <button onClick={() => handleNextBall()}>Play</button>
+            <button onClick={handleNextBall}>Play</button>
           </div>
-          <LastBall
-            balls={balls}
-            number={lastBall.number}
-            inUse={lastBall.inUse}
-          />
+          <LastBall balls={selectedBalls} />
         </footer>
       </header>
     </div>

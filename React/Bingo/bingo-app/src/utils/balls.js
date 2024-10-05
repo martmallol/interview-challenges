@@ -8,3 +8,7 @@ export const fromToArray = (from, to) => {
   }
   return arr;
 };
+
+export const getRandomNumberFromOneTo = (limit) => {
+  return Math.floor(Math.random() * limit) + 1;
+};
